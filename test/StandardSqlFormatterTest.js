@@ -9,7 +9,7 @@ describe('StandardSqlFormatter', function () {
 
   it('formats short CREATE TABLE', () => {
     expect(format('CREATE TABLE items (a INT PRIMARY KEY, b TEXT);')).toBe(
-      'CREATE TABLE items (a INT PRIMARY KEY, b TEXT);'
+      'CREATE TABLE items (a INT PRIMARY KEY, b TEXT);\n'
     );
   });
 
@@ -23,6 +23,7 @@ describe('StandardSqlFormatter', function () {
         c INT NOT NULL,
         d INT NOT NULL
       );
+
     `);
   });
 
@@ -38,6 +39,7 @@ describe('StandardSqlFormatter', function () {
         WHEN option = 'baz' THEN 3
         ELSE 4
       END;
+
     `);
   });
 
@@ -54,6 +56,7 @@ describe('StandardSqlFormatter', function () {
         WHEN 'baz' THEN 3
         ELSE 4
       END;
+
     `);
   });
 
@@ -66,6 +69,7 @@ describe('StandardSqlFormatter', function () {
         Customers (ID, MoneyBalance, Address, City)
       VALUES
         (12, -123.4, 'Skagen 2111', 'Stv');
+
     `);
   });
 
@@ -76,6 +80,7 @@ describe('StandardSqlFormatter', function () {
         supplier
       MODIFY
         supplier_name char(100) NOT NULL;
+
     `);
   });
 
@@ -86,12 +91,13 @@ describe('StandardSqlFormatter', function () {
         supplier
       ALTER COLUMN
         supplier_name VARCHAR(100) NOT NULL;
+
     `);
   });
 
   it('recognizes [] strings', () => {
-    expect(format('[foo JOIN bar]')).toBe('[foo JOIN bar]');
-    expect(format('[foo ]] JOIN bar]')).toBe('[foo ]] JOIN bar]');
+    expect(format('[foo JOIN bar]')).toBe('[foo JOIN bar]\n');
+    expect(format('[foo ]] JOIN bar]')).toBe('[foo ]] JOIN bar]\n');
   });
 
   it('recognizes @variables', () => {
@@ -106,6 +112,7 @@ describe('StandardSqlFormatter', function () {
         @"var name",
         @\`var name\`,
         @[var name];
+
     `);
   });
 
@@ -130,6 +137,7 @@ describe('StandardSqlFormatter', function () {
         'var value',
         'var value',
         'var\\ value';
+
     `);
   });
 
@@ -145,6 +153,7 @@ describe('StandardSqlFormatter', function () {
         :"var name",
         :\`var name\`,
         :[var name];
+
     `);
   });
 
@@ -172,6 +181,7 @@ describe('StandardSqlFormatter', function () {
         'var value',
         'weirder value',
         'super weird value';
+
     `);
   });
 
@@ -182,6 +192,7 @@ describe('StandardSqlFormatter', function () {
         ?1,
         ?25,
         ?;
+
     `);
   });
 
@@ -198,6 +209,7 @@ describe('StandardSqlFormatter', function () {
         second,
         third,
         first;
+
     `);
   });
 
@@ -210,6 +222,7 @@ describe('StandardSqlFormatter', function () {
         first,
         second,
         third;
+
     `);
   });
 
@@ -223,6 +236,7 @@ describe('StandardSqlFormatter', function () {
       GO
       SELECT
         2
+
     `);
   });
 
@@ -235,6 +249,7 @@ describe('StandardSqlFormatter', function () {
       FROM
         t
         CROSS JOIN t2 on t.id = t2.id_t
+
     `);
   });
 
@@ -247,6 +262,7 @@ describe('StandardSqlFormatter', function () {
       FROM
         t
         CROSS APPLY fn(t.id)
+
     `);
   });
 
@@ -258,6 +274,7 @@ describe('StandardSqlFormatter', function () {
         M
       FROM
         t
+
     `);
   });
 
@@ -266,6 +283,7 @@ describe('StandardSqlFormatter', function () {
     expect(result).toBe(dedent`
       SELECT
         N'value'
+
     `);
   });
 
@@ -278,6 +296,7 @@ describe('StandardSqlFormatter', function () {
       FROM
         t
         OUTER APPLY fn(t.id)
+
     `);
   });
 
@@ -288,6 +307,7 @@ describe('StandardSqlFormatter', function () {
         *
       FETCH FIRST
         2 ROWS ONLY;
+
     `);
   });
 
@@ -303,6 +323,7 @@ describe('StandardSqlFormatter', function () {
         WHEN option = 'baz' THEN 3
         ELSE 4
       END;
+
     `);
   });
 
@@ -323,6 +344,7 @@ describe('StandardSqlFormatter', function () {
         END
       FROM
         table
+
     `);
   });
 
@@ -339,6 +361,7 @@ describe('StandardSqlFormatter', function () {
         WHEN 'three' THEN 3
         ELSE 4
       END;
+
     `);
   });
 
@@ -350,6 +373,7 @@ describe('StandardSqlFormatter', function () {
         when option = 'foo' then 1
         else 2
       end;
+
     `);
   });
 
@@ -363,6 +387,7 @@ describe('StandardSqlFormatter', function () {
         ENDDATE
       FROM
         table1;
+
     `);
   });
 
@@ -372,6 +397,7 @@ describe('StandardSqlFormatter', function () {
         a #comment, here
       FROM
         b --comment
+
     `);
   });
 
@@ -388,6 +414,7 @@ describe('StandardSqlFormatter', function () {
       FROM
         b --comment
       ;
+
     `);
   });
 
@@ -402,6 +429,7 @@ describe('StandardSqlFormatter', function () {
         a --comment
       ,
         b
+
     `);
   });
 
@@ -410,6 +438,7 @@ describe('StandardSqlFormatter', function () {
       SELECT
         (a --comment
       )
+
     `);
   });
 
@@ -418,10 +447,11 @@ describe('StandardSqlFormatter', function () {
       SELECT
         a --comment
         ()
+
     `);
   });
 
   it('formats lonely semicolon', () => {
-    expect(format(';')).toBe(';');
+    expect(format(';')).toBe(';\n');
   });
 });

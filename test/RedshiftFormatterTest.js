@@ -19,6 +19,7 @@ describe('RedshiftFormatter', function () {
         col2 DESC
       LIMIT
         10;
+
     `);
   });
 
@@ -37,6 +38,7 @@ describe('RedshiftFormatter', function () {
       FROM
         -- This is a comment
         MyTable;
+
     `);
   });
 
@@ -49,12 +51,13 @@ describe('RedshiftFormatter', function () {
         @col1
       FROM
         tbl
+
     `);
   });
 
   it('formats short CREATE TABLE', function () {
     expect(sqlFormatter.format('CREATE TABLE items (a INT, b TEXT);')).toBe(
-      'CREATE TABLE items (a INT, b TEXT);'
+      'CREATE TABLE items (a INT, b TEXT);\n'
     );
   });
 
@@ -73,6 +76,7 @@ describe('RedshiftFormatter', function () {
       )
       DISTKEY(created_at)
       SORTKEY(created_at);
+
     `);
   });
 
@@ -101,6 +105,7 @@ describe('RedshiftFormatter', function () {
         ',' QUOTE '"'
       REGION
         AS 'us-east-1'
+
     `);
   });
 });

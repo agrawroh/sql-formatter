@@ -17,6 +17,7 @@ describe('PlSqlFormatter', function () {
         col2 DESC
       FETCH FIRST
         20 ROWS ONLY;
+
     `);
   });
 
@@ -28,6 +29,7 @@ describe('PlSqlFormatter', function () {
       FROM
         -- This is a comment
         MyTable;
+
     `);
   });
 
@@ -39,12 +41,13 @@ describe('PlSqlFormatter', function () {
         col.2@
       FROM
         tbl
+
     `);
   });
 
   it('formats short CREATE TABLE', () => {
     expect(format('CREATE TABLE items (a INT PRIMARY KEY, b TEXT);')).toBe(
-      'CREATE TABLE items (a INT PRIMARY KEY, b TEXT);'
+      'CREATE TABLE items (a INT PRIMARY KEY, b TEXT);\n'
     );
   });
 
@@ -58,6 +61,7 @@ describe('PlSqlFormatter', function () {
         c INT NOT NULL,
         d INT NOT NULL
       );
+
     `);
   });
 
@@ -70,6 +74,7 @@ describe('PlSqlFormatter', function () {
         Customers (ID, MoneyBalance, Address, City)
       VALUES
         (12, -123.4, 'Skagen 2111', 'Stv');
+
     `);
   });
 
@@ -80,6 +85,7 @@ describe('PlSqlFormatter', function () {
         supplier
       MODIFY
         supplier_name char(100) NOT NULL;
+
     `);
   });
 
@@ -90,6 +96,7 @@ describe('PlSqlFormatter', function () {
         supplier
       ALTER COLUMN
         supplier_name VARCHAR(100) NOT NULL;
+
     `);
   });
 
@@ -100,6 +107,7 @@ describe('PlSqlFormatter', function () {
         ?1,
         ?25,
         ?;
+
     `);
   });
 
@@ -111,14 +119,26 @@ describe('PlSqlFormatter', function () {
         2: 'third',
       },
     });
-    expect(result).toBe('SELECT\n' + '  second,\n' + '  third,\n' + '  first;');
+    expect(result).toBe(dedent`
+      SELECT
+        second,
+        third,
+        first;
+
+    `);
   });
 
   it('replaces ? indexed placeholders with param values', () => {
     const result = format('SELECT ?, ?, ?;', {
       params: ['first', 'second', 'third'],
     });
-    expect(result).toBe('SELECT\n' + '  first,\n' + '  second,\n' + '  third;');
+    expect(result).toBe(dedent`
+      SELECT
+        first,
+        second,
+        third;
+
+    `);
   });
 
   it('formats SELECT query with CROSS JOIN', () => {
@@ -130,6 +150,7 @@ describe('PlSqlFormatter', function () {
       FROM
         t
         CROSS JOIN t2 on t.id = t2.id_t
+
     `);
   });
 
@@ -142,6 +163,7 @@ describe('PlSqlFormatter', function () {
       FROM
         t
         CROSS APPLY fn(t.id)
+
     `);
   });
 
@@ -153,6 +175,7 @@ describe('PlSqlFormatter', function () {
         M
       FROM
         t
+
     `);
   });
 
@@ -161,6 +184,7 @@ describe('PlSqlFormatter', function () {
     expect(result).toBe(dedent`
       SELECT
         N'value'
+
     `);
   });
 
@@ -173,6 +197,7 @@ describe('PlSqlFormatter', function () {
       FROM
         t
         OUTER APPLY fn(t.id)
+
     `);
   });
 
@@ -188,6 +213,7 @@ describe('PlSqlFormatter', function () {
         WHEN option = 'baz' THEN 3
         ELSE 4
       END;
+
     `);
   });
 
@@ -208,6 +234,7 @@ describe('PlSqlFormatter', function () {
         END
       FROM
         table
+
     `);
   });
 
@@ -224,6 +251,7 @@ describe('PlSqlFormatter', function () {
         WHEN 'three' THEN 3
         ELSE 4
       END;
+
     `);
   });
 
@@ -240,6 +268,7 @@ describe('PlSqlFormatter', function () {
         WHEN 'three' THEN 3
         ELSE 4
       END;
+
     `);
   });
 
@@ -302,6 +331,7 @@ describe('PlSqlFormatter', function () {
         t1
       ORDER BY
         order1;
+
     `);
   });
 
@@ -330,7 +360,7 @@ describe('PlSqlFormatter', function () {
       another AS (SELECT * FROM dual)
       SELECT id, parent_id FROM t1 ORDER BY order1;
     `);
-    expect(result).toBe(dedent/* sql */ `
+    expect(result).toBe(dedent`
       WITH t1(id, parent_id) AS (
         -- Anchor member.
         SELECT
@@ -364,6 +394,7 @@ describe('PlSqlFormatter', function () {
         t1
       ORDER BY
         order1;
+
     `);
   });
 });

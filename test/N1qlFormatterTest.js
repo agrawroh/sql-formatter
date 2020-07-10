@@ -14,6 +14,7 @@ describe('N1qlFormatter', function () {
         order_lines[0].productId
       FROM
         orders;
+
     `);
   });
 
@@ -27,6 +28,7 @@ describe('N1qlFormatter', function () {
         tutorial
       USE KEYS
         ['dave', 'ian'];
+
     `);
   });
 
@@ -39,6 +41,7 @@ describe('N1qlFormatter', function () {
         heroes (KEY, VALUE)
       VALUES
         ('123', {'id': 1, 'type': 'Tarzan'});
+
     `);
   });
 
@@ -66,6 +69,7 @@ describe('N1qlFormatter', function () {
             'hello': 'world'
           }
         );
+
     `);
   });
 
@@ -78,6 +82,7 @@ describe('N1qlFormatter', function () {
         tutorial
       UNNEST
         tutorial.children c;
+
     `);
   });
 
@@ -96,6 +101,7 @@ describe('N1qlFormatter', function () {
         'Elinor_33313792'
       NEST
         orders_with_users orders ON KEYS ARRAY s.order_id FOR s IN usr.shipped_order_history END;
+
     `);
   });
 
@@ -106,6 +112,7 @@ describe('N1qlFormatter', function () {
         tutorial t
       USE KEYS
         'baldwin' RETURNING t
+
     `);
   });
 
@@ -120,6 +127,7 @@ describe('N1qlFormatter', function () {
         'baldwin'
       SET
         type = 'actor' RETURNING tutorial.type
+
     `);
   });
 
@@ -131,6 +139,7 @@ describe('N1qlFormatter', function () {
         $'var name',
         $"var name",
         $\`var name\`;
+
     `);
   });
 
@@ -147,6 +156,7 @@ describe('N1qlFormatter', function () {
         'var value',
         'var value',
         'var value';
+
     `);
   });
 
@@ -163,6 +173,7 @@ describe('N1qlFormatter', function () {
         second,
         third,
         first;
+
     `);
   });
 });

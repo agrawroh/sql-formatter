@@ -24,6 +24,7 @@ describe('SparkSqlFormatter', () => {
           ORDER BY
             time
         );
+
     `);
   });
 
@@ -37,6 +38,7 @@ describe('SparkSqlFormatter', () => {
         window(time, "1 hour").end AS window_end
       FROM
         tbl;
+
     `);
   });
 
@@ -47,6 +49,7 @@ describe('SparkSqlFormatter', () => {
     expect(result).toBe(dedent`
       SELECT
         \${var_name};
+
     `);
   });
 
@@ -63,6 +66,7 @@ describe('SparkSqlFormatter', () => {
       SELECT
         'var one',
         'var two';
+
     `);
   });
 });

@@ -17,6 +17,7 @@ describe('Db2Formatter', function () {
           col2 DESC
         FETCH FIRST
           20 ROWS ONLY;
+
       `);
   });
 
@@ -32,6 +33,7 @@ describe('Db2Formatter', function () {
       FROM
         -- This is a comment
         MyTable;
+
     `);
   });
 
@@ -43,6 +45,7 @@ describe('Db2Formatter', function () {
         @col2
       FROM
         tbl
+
     `);
   });
 
@@ -50,6 +53,7 @@ describe('Db2Formatter', function () {
     expect(format('SELECT :variable;')).toBe(dedent`
       SELECT
         :variable;
+
     `);
   });
 
@@ -60,6 +64,7 @@ describe('Db2Formatter', function () {
     expect(result).toBe(dedent`
       SELECT
         "variable value"
+
     `);
   });
 });
